@@ -11,6 +11,8 @@ from pygame.locals import (
 
 pygame.init()
 
+clock = pygame.time.Clock()
+
 # Screen width and height
 SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 600
@@ -21,19 +23,28 @@ WHITE = (255, 255, 255)
 
 class Snake(pygame.sprite.Sprite):
     def __init__(self):
+        super(Snake, self).__init__()
         self.surf = pygame.Surface((24, 24))
         self.surf.fill(WHITE)
         self.rect = self.surf.get_rect()
 
     def update(self, pressed_keys):
         if pressed_keys[K_UP]:
-            self.rect.move_ip(0, 24)
-        if pressed_keys[K_DOWN]:
             self.rect.move_ip(0, -24)
+        if pressed_keys[K_DOWN]:
+            self.rect.move_ip(0, 24)
         if pressed_keys[K_LEFT]:
             self.rect.move_ip(-24, 0)
         if pressed_keys[K_RIGHT]:
             self.rect.move_ip(24, 0)
+        if self.rect.left < 0:
+            self.rect.left = 0
+        if self.rect.right > SCREEN_WIDTH:
+            self.rect.right = SCREEN_WIDTH
+        if self.rect.top <= 0:
+            self.rect.top = 0
+        if self.rect.bottom >= SCREEN_HEIGHT:
+            self.rect.bottom = SCREEN_HEIGHT
 
 
 def main():
@@ -71,7 +82,7 @@ def main():
     # Event loop
     while running:
         for event in pygame.event.get():
-            # Check for keypresses
+            # Check for key presses
             if event.type == KEYDOWN:
                 # escape key?
                 if event.key == K_ESCAPE:
@@ -80,17 +91,19 @@ def main():
             elif event.type == QUIT:
                 running = False
 
-        # Check for keypresses
+        # Check for user keyboard input
         pressed_keys = pygame.key.get_pressed()
+        print(pressed_keys[K_DOWN], pressed_keys[K_RIGHT])
+        print(pygame.event.get())
 
         # Update the snake object
         snake.update(pressed_keys)
-
         screen.blit(background, (0, 0))
-
-        screen.blit(snake.surf, (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
-
+        screen.blit(snake.surf, snake.rect)
         pygame.display.flip()
+
+        # set frame rate
+        clock.tick(2)
 
 
 main()
