@@ -1,7 +1,5 @@
 import pygame
 
-import main
-
 from pygame.locals import (
     K_UP,
     K_DOWN,
@@ -11,6 +9,10 @@ from pygame.locals import (
     KEYDOWN,
     QUIT,
 )
+
+# Screen width and height
+SCREEN_WIDTH = 600
+SCREEN_HEIGHT = 600
 
 
 class Snake(pygame.sprite.Sprite):
