@@ -1,6 +1,6 @@
 import shelve
+import main
 
-def main():
-    d = shelve.open('score.txt')
-    d['score'] = score
-    d.close
+d = shelve.open('score.txt')
+d['score'] = score
+d.close
