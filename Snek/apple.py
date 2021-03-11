@@ -26,8 +26,8 @@ class Apple(pygame.sprite.Sprite):
             self.rect.y += (24 - self.rect.y)
 
     def new_position(self):
-        self.rect.x = random.randint(0, main.SCREEN_WIDTH - 24)
-        self.rect.y = random.randint(0, main.SCREEN_HEIGHT - 24)
+        self.rect.x = random.randint(0, SCREEN_WIDTH - 24)
+        self.rect.y = random.randint(0, SCREEN_HEIGHT - 24)
         self.normalize_position()
 
 

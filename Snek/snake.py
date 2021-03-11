@@ -42,9 +42,9 @@ class Snake(pygame.sprite.Sprite):
             self.y_velocity = 0
         if self.rect.left < 0:
             self.rect.left = 0
-        if self.rect.right > main.SCREEN_WIDTH:
-            self.rect.right = main.SCREEN_WIDTH
+        if self.rect.right > SCREEN_WIDTH:
+            self.rect.right = SCREEN_WIDTH
         if self.rect.top <= 0:
             self.rect.top = 0
-        if self.rect.bottom >= main.SCREEN_HEIGHT:
-            self.rect.bottom = main.SCREEN_HEIGHT
+        if self.rect.bottom >= SCREEN_HEIGHT:
+            self.rect.bottom = SCREEN_HEIGHT
