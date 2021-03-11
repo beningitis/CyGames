@@ -24,6 +24,8 @@ class Snake(pygame.sprite.Sprite):
         self.surf.fill('#ffffff')
         self.rect = self.surf.get_rect()
         self.trail = []
+        # loads the high score data from file
+        # self.load_data()
 
     def update(self, pressed_keys):
         self.rect.move_ip(self.x_velocity, self.y_velocity)
