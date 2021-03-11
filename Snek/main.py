@@ -2,9 +2,15 @@ import pygame
 import apple
 import snake
 
-
-
-
+from pygame.locals import (
+    K_UP,
+    K_DOWN,
+    K_LEFT,
+    K_RIGHT,
+    K_ESCAPE,
+    KEYDOWN,
+    QUIT,
+)
 
 pygame.init()
 
@@ -29,9 +35,9 @@ def main():
     background.fill(BLACK)
 
     # Instantiate Snake object
-    snake = snake.Snake()
+    player = snake.Snake()
 
-    apple = apple.Apple()
+    target = apple.Apple()
 
     # Text
     # font = pygame.font.Font(None, 36)
@@ -70,11 +76,11 @@ def main():
         print(pygame.event.get())
 
         # Update the snake object
-        snake.update(pressed_keys)
+        player.update(pressed_keys)
         screen.blit(background, (0, 0))
-        screen.blit(snake.surf, snake.rect)
-        apple.normalize_position()
-        screen.blit(apple.surf, (apple.x_pos, apple.y_pos))
+        screen.blit(player.surf, player.rect)
+        target.normalize_position()
+        screen.blit(target.surf, (target.x_pos, target.y_pos))
         pygame.display.flip()
 
         # set frame rate
