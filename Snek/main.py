@@ -36,8 +36,13 @@ def main():
 
     # Instantiate Snake object
     player = snake.Snake()
-
     target = apple.Apple()
+
+    targets = pygame.sprite.Group()
+    targets.add(target)
+    all_sprites = pygame.sprite.Group()
+    all_sprites.add(player)
+    all_sprites.add(target)
 
     # Text
     # font = pygame.font.Font(None, 36)
@@ -70,6 +75,9 @@ def main():
             elif event.type == QUIT:
                 running = False
 
+        if pygame.sprite.spritecollideany(player, targets):
+            target.kill()
+
         # Check for user keyboard input
         pressed_keys = pygame.key.get_pressed()
         print(pressed_keys[K_DOWN], pressed_keys[K_RIGHT])
@@ -78,9 +86,11 @@ def main():
         # Update the snake object
         player.update(pressed_keys)
         screen.blit(background, (0, 0))
-        screen.blit(player.surf, player.rect)
+        for entity in all_sprites:
+            screen.blit(entity.surf, entity.rect)
+        # screen.blit(player.surf, player.rect)
         target.normalize_position()
-        screen.blit(target.surf, (target.x_pos, target.y_pos))
+        # screen.blit(target.surf, (target.rect.x, target.rect.y))
         pygame.display.flip()
 
         # set frame rate
