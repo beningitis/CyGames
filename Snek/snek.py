@@ -76,7 +76,7 @@ def main():
         #if game.snake.x <= 0 or game.snake.x >= SCREEN_WIDTH - BLOCK_WIDTH or game.snake.y <= 0 or game.snake.y >= SCREEN_HEIGHT - BLOCK_WIDTH:
         #    game.game_over = True
 
-        game.show_score()
+        #game.show_score()
         
         # Blit background and sprites to the screen
         screen.blit(background, (0, 0))
