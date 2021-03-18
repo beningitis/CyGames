@@ -15,19 +15,22 @@ class Game(object):
         self.game_over = False
 
         # Sprite groups
-        self.apples = pygame.sprite.Group()
+        self.apple_group = pygame.sprite.Group()
         self.player = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
 
         # Create apple object
         self.apple = food.Food()
-        self.apples.add(self.apple)
+        self.apple_group.add(self.apple)
 
         # Create snake object
         self.snake = snake.Snake()
         self.player.add(self.snake)
 
-        self.all_sprites.add(self.apples)
+        self.all_sprites.add(self.apple_group)
         self.all_sprites.add(self.player)
 
-
+    def grow_snake(self):
+        self.snake.body.insert(0, list(self.snake.position))
+        if not pygame.sprite.spritecollideany(self.snake, self.apple_group):
+            self.snake.body.pop()
