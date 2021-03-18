@@ -34,6 +34,7 @@ class Snake(pygame.sprite.Sprite):
         self.y = SCREEN_HEIGHT / 2
 
         self.position = [self.x, self.y]
+        self.body = [[self.x, self.y], [self.x - BLOCK_WIDTH, self.y], [self.x - 2 * BLOCK_WIDTH, self.y]]
 
         # surf is a 24x24 px surface, filled with white
         self.surf = pygame.Surface((BLOCK_WIDTH, BLOCK_WIDTH))
@@ -71,4 +72,7 @@ class Snake(pygame.sprite.Sprite):
             self.rect.top = 0
         if self.rect.bottom >= SCREEN_HEIGHT:
             self.rect.bottom = SCREEN_HEIGHT
+
+    def grow(self):
+        self.body.insert(0, list(self.position))
 
