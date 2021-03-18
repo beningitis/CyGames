@@ -26,7 +26,7 @@ class Snake(pygame.sprite.Sprite):
 
     def __init__(self):
         super().__init__()
-        # Snek does not move initially
+        # Snake does not move initially
         self.x_velocity = 0
         self.y_velocity = 0
 
