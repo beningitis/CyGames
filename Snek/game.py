@@ -15,20 +15,37 @@ class Game(object):
         self.game_over = False
 
         # Sprite groups
-        self.apple_group = pygame.sprite.Group()
+        self.apples = pygame.sprite.Group()
         self.player = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
 
         # Create apple object
         self.apple = food.Food()
-        self.apple_group.add(self.apple)
+        self.apples.add(self.apple)
 
         # Create snake object
         self.snake = snake.Snake()
         self.player.add(self.snake)
 
-        self.all_sprites.add(self.apple_group)
+        self.all_sprites.add(self.apples)
         self.all_sprites.add(self.player)
+
+    '''
+    def game_over(self):
+        font = pygame.font.Font(None, 90)
+        text = font.render('Game Over', True, (255, 255, 255))
+        game_over_rect = text.get_rect()
+        game_over_rect.center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
+        screen.blit(text, game_over_rect)
+        pygame.display.flip()
+
+    #def show_score(self):
+        font = pygame.font.Font(None, 25)
+        text = font.render('Score : ' + str(self.score), True, (255, 255, 255))
+        score_rect = text.get_rect()
+        score_rect = (100, 100)
+        screen.blit(text, score_rect)
+    '''
 
     def grow_snake(self):
         self.snake.body.insert(0, list(self.snake.position))
