@@ -20,7 +20,6 @@ from Snek.constants import (
     BLACK
 )
 
-
 class Snake(pygame.sprite.Sprite):
     # Represents the snake
 
@@ -30,8 +29,8 @@ class Snake(pygame.sprite.Sprite):
         self.x_velocity = 0
         self.y_velocity = 0
 
-        self.x = SCREEN_WIDTH / 2
-        self.y = SCREEN_HEIGHT / 2
+        self.x = SCREEN_WIDTH / 2 - BLOCK_WIDTH / 2
+        self.y = SCREEN_HEIGHT / 2 - BLOCK_WIDTH / 2
 
         self.position = [self.x, self.y]
         self.body = [[self.x, self.y], [self.x - BLOCK_WIDTH, self.y], [self.x - 2 * BLOCK_WIDTH, self.y]]
@@ -42,14 +41,24 @@ class Snake(pygame.sprite.Sprite):
 
         self.rect = self.surf.get_rect()
         # Center of rect object is at position[]
-        self.rect.centerx = self.position[0]
-        self.rect.centery = self.position[1]
+        self.rect.x = self.position[0]
+        self.rect.y = self.position[1]
 
         # loads the high score data from file
         # self.load_data()
 
     def update(self, pressed_keys):
         self.rect.move_ip(self.x_velocity, self.y_velocity)
+        self.position[0] += self.x_velocity
+        self.position[1] += self.y_velocity
+        if self.position[0] < 0:
+            self.position[0] = 0
+        if self.position[0] > SCREEN_WIDTH - BLOCK_WIDTH:
+            self.position[0] = SCREEN_WIDTH - BLOCK_WIDTH
+        if self.position[1] < 0:
+            self.position[1] = 0
+        if self.position[1] > SCREEN_HEIGHT - BLOCK_WIDTH:
+            self.position[1] = SCREEN_HEIGHT - BLOCK_WIDTH
 
         if pressed_keys[K_UP]:
             self.y_velocity = -24
@@ -72,7 +81,3 @@ class Snake(pygame.sprite.Sprite):
             self.rect.top = 0
         if self.rect.bottom >= SCREEN_HEIGHT:
             self.rect.bottom = SCREEN_HEIGHT
-
-    def grow(self):
-        self.body.insert(0, list(self.position))
-
