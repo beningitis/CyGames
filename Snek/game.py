@@ -49,5 +49,5 @@ class Game(object):
 
     def grow_snake(self):
         self.snake.body.insert(0, list(self.snake.position))
-        if not pygame.sprite.spritecollideany(self.snake, self.apple_group):
+        if not pygame.sprite.spritecollideany(self.snake, self.apples):
             self.snake.body.pop()

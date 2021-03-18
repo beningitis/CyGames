@@ -61,7 +61,7 @@ def main():
             elif event.type == QUIT:
                 game.game_over = True
 
-        if pygame.sprite.spritecollideany(game.snake, game.apple_group):
+        if pygame.sprite.spritecollideany(game.snake, game.apples):
             game.score += 1
             game.apple.update()
             print(game.score)
