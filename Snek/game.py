@@ -30,4 +30,24 @@ class Game(object):
         self.all_sprites.add(self.apples)
         self.all_sprites.add(self.player)
 
+    def game_over(self):
+        font = pygame.font.Font(None, 90)
+        text = font.render('Game Over', True, (255, 255, 255))
+        game_over_rect = text.get_rect()
+        game_over_rect.center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
+        screen.blit(text, game_over_rect)
+        pygame.display.flip()
+
+    def show_score(self):
+        font = pygame.font.Font(None, 25)
+        text = font.render('Score : ' + str(self.score), True, (255, 255, 255))
+        score_rect = text.get_rect()
+        score_rect = (100, 100)
+        screen.blit(text, score_rect)
+
+
+
+
+
+
 

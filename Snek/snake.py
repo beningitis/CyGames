@@ -51,16 +51,16 @@ class Snake(pygame.sprite.Sprite):
     def update(self, pressed_keys):
         self.rect.move_ip(self.x_velocity, self.y_velocity)
 
-        if pressed_keys[K_UP]:
+        if pressed_keys[K_UP or event.key == ord('w')]:
             self.y_velocity = -24
             self.x_velocity = 0
-        if pressed_keys[K_DOWN]:
+        if pressed_keys[K_DOWN or event.key == ord('s')]:
             self.y_velocity = 24
             self.x_velocity = 0
-        if pressed_keys[K_LEFT]:
+        if pressed_keys[K_LEFT or event.key == ord('a')]:
             self.x_velocity = -24
             self.y_velocity = 0
-        if pressed_keys[K_RIGHT]:
+        if pressed_keys[K_RIGHT or event.key == ord('d')]:
             self.x_velocity = 24
             self.y_velocity = 0
         if self.rect.left < 0:
@@ -75,4 +75,5 @@ class Snake(pygame.sprite.Sprite):
 
     def grow(self):
         self.body.insert(0, list(self.position))
+
 
