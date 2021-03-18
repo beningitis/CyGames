@@ -31,8 +31,8 @@ def main():
 
     ADD_APPLE = pygame.event.Event(pygame.USEREVENT + 1)
 
-    size = [SCREEN_WIDTH, SCREEN_HEIGHT]
-    screen = pygame.display.set_mode(size)
+    frame_size = [SCREEN_WIDTH, SCREEN_HEIGHT]
+    screen = pygame.display.set_mode(frame_size)
 
     pygame.display.set_caption("Snek")
 
@@ -61,7 +61,7 @@ def main():
             elif event.type == QUIT:
                 game.game_over = True
 
-        if pygame.sprite.spritecollideany(game.snake, game.apples):
+        if pygame.sprite.spritecollideany(game.snake, game.apple_group):
             game.score += 1
             game.apple.update()
 
@@ -70,7 +70,8 @@ def main():
         # update the snake object
         game.snake.update(pressed_keys)
 
-        game.snake.grow()
+        game.grow_snake()
+        print(game.snake.body)
 
         #if game.snake.x <= 0 or game.snake.x >= SCREEN_WIDTH - BLOCK_WIDTH or game.snake.y <= 0 or game.snake.y >= SCREEN_HEIGHT - BLOCK_WIDTH:
         #    game.game_over = True
@@ -79,6 +80,10 @@ def main():
         screen.blit(background, (0, 0))
         for sprite in game.all_sprites:
             screen.blit(sprite.surf, sprite.rect)
+
+        for pos in game.snake.body:
+            pygame.draw.rect(screen, WHITE, pygame.Rect(pos[0], pos[1], BLOCK_WIDTH, BLOCK_WIDTH))
+
         pygame.display.flip()
 
         # Set frame rate
