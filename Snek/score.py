@@ -1,6 +1,7 @@
 import main
 from os import path
 
+
 def load_data(self):
     # load high score
     self.dir = path.dirname(__file__)

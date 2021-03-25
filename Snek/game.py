@@ -1,34 +1,27 @@
 import pygame
 
-from Snek import (
-    food,
-    snake,
-)
+from Snek.food import Food
+from Snek.snake import Snake, Block
 
 
 class Game(object):
     # Represents an instance of the Snek game
+    player = Snake()
+    apple = Food()
+    score = 0
+    game_over = False
 
     def __init__(self):
 
-        self.score = 0
-        self.game_over = False
-
         # Sprite groups
-        self.apples = pygame.sprite.Group()
-        self.player = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
-
-        # Create apple object
-        self.apple = food.Food()
-        self.apples.add(self.apple)
+        self.apples = pygame.sprite.Group()
 
         # Create snake object
-        self.snake = snake.Snake()
-        self.player.add(self.snake)
-
+        self.player = Snake()
+        self.apples.add(self.apple)
         self.all_sprites.add(self.apples)
-        self.all_sprites.add(self.player)
+        self.all_sprites.add(Snake.snakeBodySpriteGroup)
 
     '''
     def game_over(self):
@@ -47,7 +40,15 @@ class Game(object):
         screen.blit(text, score_rect)
     '''
 
+    def move_snake(self):
+        x = self.player.snake_body[0].rect.x + self.player.x_velocity
+        y = self.player.snake_body[0].rect.y + self.player.y_velocity
+        new_block = Block(x, y)
+
+        self.player.snake_body.insert(0, new_block)
+        self.all_sprites.add(new_block)
+
     def grow_snake(self):
-        self.snake.body.insert(0, list(self.snake.position))
-        if not pygame.sprite.spritecollideany(self.snake, self.apples):
-            self.snake.body.pop()
+        if not pygame.sprite.spritecollideany(self.player.snake_body[0], self.apples):
+            old_block = self.player.snake_body.pop()
+            self.all_sprites.remove(old_block)
