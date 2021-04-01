@@ -9,4 +9,6 @@ SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 600
 BLOCK_WIDTH = 24
 
-FRAME_RATE = 15
+game_over_text = "Game Over"
+
+

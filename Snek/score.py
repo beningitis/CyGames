@@ -1,4 +1,3 @@
-import main
 from os import path
 
 
