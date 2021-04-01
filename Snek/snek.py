@@ -29,7 +29,7 @@ GAME_AREA_POS = [20, 75]
 SCORE_POS = [20, 20]
 HISCORE_POS = [380, 20]
 
-play = True
+play_again = True
 
 pygame.init()
 
@@ -54,12 +54,31 @@ def main():
 
     clock = pygame.time.Clock()
 
-    FRAME_RATE = 25
+    FRAME_RATE = 15
 
     game = Game()
     window.blit(window_bg, (0, 0))
 
     game.game_over = False
+
+    def game_over():
+        game_area.fill(BLACK)
+        window.blit(game_area, GAME_AREA_POS)
+        font = pygame.font.Font(None, 120)
+        death_message = font.render(game_over_text, True, (255, 255, 255))
+        game_over_rect = death_message.get_rect()
+        game_over_rect.center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+        window.blit(death_message, game_over_rect)
+        pygame.display.flip()
+
+        wait = True;
+        while wait:
+            clock.tick(FRAME_RATE)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                if event.type == pygame.KEYUP:
+                    wait = False
 
     # main game loop
     while not game.game_over:
@@ -121,34 +140,16 @@ def main():
         window.blit(high_score_text, high_score_rect)
 
         if game.game_over:
-            game_area.fill(BLACK)
-            window.blit(game_area, GAME_AREA_POS)
-            font = pygame.font.Font(None, 120)
-            death_message = font.render(game_over_text, True, (255, 255, 255))
-            game_over_rect = death_message.get_rect()
-            game_over_rect.center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
-            window.blit(death_message, game_over_rect)
-            pygame.display.flip()
-
-            wait = True;
-            while wait:
-                clock.tick(FRAME_RATE)
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        pygame.quit()
-                    if event.type == pygame.KEYUP:
-                        wait = False
+            game_over()
 
         pygame.display.flip()
+
 
         # Set frame rate
         clock.tick(FRAME_RATE)
 
 
 main()
-
-
-
 
 
 
