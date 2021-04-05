@@ -1,8 +1,6 @@
 import pygame
 import random
 
-# import Snek.score
-
 import Snek.game
 
 from constants import (
@@ -108,6 +106,7 @@ def main():
             pygame.display.flip()
 
         game = Snek.game.Game()
+        game.load_hs()
 
         window.blit(window_bg, (0, 0))
         game_area.fill(BLACK)
@@ -130,6 +129,9 @@ def main():
             if game.game_over:
                 game_over()
                 running = False
+                if game.score > game.high_score:
+                    game.high_score = game.score
+                    game.update_hs()
 
     play_again = True
 

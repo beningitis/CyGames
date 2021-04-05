@@ -1,4 +1,5 @@
 import pygame
+from os import path
 from pygame.locals import (
     K_ESCAPE,
     KEYDOWN,
@@ -12,11 +13,13 @@ from pygame.locals import (
 
 from Snek.constants import (
     SCREEN_WIDTH,
-    SCREEN_HEIGHT
+    SCREEN_HEIGHT,
+    HS_FILE
 )
 
 from Snek.food import Food
 from Snek.snake import Snake, Block
+import Snek.score
 
 
 class Game(object):
@@ -30,6 +33,8 @@ class Game(object):
         self.high_score = 0
         self.game_over = False
 
+        self.dir = path.dirname(__file__)
+
         # Sprite groups
         self.all_sprites = pygame.sprite.Group()
         self.apples = pygame.sprite.Group()
@@ -41,15 +46,15 @@ class Game(object):
         self.all_sprites.add(self.player.snakeBodySpriteGroup)
 
     def move_snake(self):
-        x = self.player.snake_body[0].rect.x + self.player.x_velocity
-        y = self.player.snake_body[0].rect.y + self.player.y_velocity
-        new_block = Block(x, y)
+          x = self.player.snake_body[0].rect.x + self.player.x_velocity
+          y = self.player.snake_body[0].rect.y + self.player.y_velocity
+          new_block = Block(x, y)
 
-        self.player.snake_body.insert(0, new_block)
-        self.all_sprites.add(new_block)
-        if not pygame.sprite.spritecollideany(self.player.snake_body[0], self.apples):
-            old_block = self.player.snake_body.pop()
-            self.all_sprites.remove(old_block)
+          self.player.snake_body.insert(0, new_block)
+          self.all_sprites.add(new_block)
+          if not pygame.sprite.spritecollideany(self.player.snake_body[0], self.apples):
+              old_block = self.player.snake_body.pop()
+              self.all_sprites.remove(old_block)
 
     def game_logic(self):
         for event in pygame.event.get():
@@ -83,3 +88,16 @@ class Game(object):
             self.game_over = True
         if self.player.snake_body[0].rect.y >= SCREEN_HEIGHT or self.player.snake_body[0].rect.y < 0:
             self.game_over = True
+
+    def load_hs(self):
+        # load high score
+        self.dir = path.dirname(__file__)
+        with open(path.join(self.dir, HS_FILE), 'r') as f:
+            try:
+                self.high_score = int(f.read())
+            except:
+                self.high_score = 0
+
+    def update_hs(self):
+        with open(path.join(self.dir, HS_FILE), 'w') as f:
+            f.write(str(self.score))
