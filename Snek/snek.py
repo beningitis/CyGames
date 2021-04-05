@@ -1,15 +1,9 @@
 import pygame
 import random
 
-from pygame.locals import (
-    K_ESCAPE,
-    KEYDOWN,
-    QUIT,
-    K_UP,
-    K_DOWN,
-    K_LEFT,
-    K_RIGHT,
-)
+# import Snek.score
+
+import Snek.game
 
 from constants import (
     SCREEN_WIDTH,
@@ -20,136 +14,139 @@ from constants import (
     RED,
     GREEN,
     BLUE,
-    game_over_text
+    game_over_text,
+    play_again_text,
+    FRAME_RATE
 )
 
-from Snek.game import Game
-WINDOW_SIZE = [640, 800]
+# from game import Game
+WINDOW_SIZE = [640, 700]
 GAME_AREA_POS = [20, 75]
 SCORE_POS = [20, 20]
 HISCORE_POS = [380, 20]
 
-play_again = True
 
 pygame.init()
 
 window = pygame.display.set_mode(WINDOW_SIZE)
+pygame.display.set_caption("Snek")
 window_bg = pygame.Surface(WINDOW_SIZE)
 window_bg = window_bg.convert()
 window_bg.fill(GREEN)
+
+frame_size = [SCREEN_WIDTH, SCREEN_HEIGHT]
+
+clock = pygame.time.Clock()
 
 
 def main():
     # Main method
 
-    # Initialize Pygame and set up window
-
-    frame_size = [SCREEN_WIDTH, SCREEN_HEIGHT]
-    pygame.display.set_caption("Snek")
-
-    # Background
     game_area = pygame.Surface(frame_size)
     game_area = game_area.convert()
-    game_area.fill(BLACK)
-
-    clock = pygame.time.Clock()
-
-    FRAME_RATE = 15
-
-    game = Game()
-    window.blit(window_bg, (0, 0))
-
-    game.game_over = False
 
     def game_over():
         game_area.fill(BLACK)
         window.blit(game_area, GAME_AREA_POS)
-        font = pygame.font.Font(None, 120)
-        death_message = font.render(game_over_text, True, (255, 255, 255))
+        go_font = pygame.font.SysFont("comicsansms", 80)
+        pa_font = pygame.font.SysFont("comicsansms", 40)
+        death_message = go_font.render(game_over_text, True, WHITE)
+        play_again_message = pa_font.render(play_again_text, True, WHITE)
         game_over_rect = death_message.get_rect()
-        game_over_rect.center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+        play_again_rect = play_again_message.get_rect()
+        game_over_rect.center = (SCREEN_WIDTH / 2 + BLOCK_WIDTH, SCREEN_HEIGHT / 2)
+        play_again_rect.center = (SCREEN_WIDTH / 2 + BLOCK_WIDTH, SCREEN_HEIGHT / 2 + 60)
         window.blit(death_message, game_over_rect)
         pygame.display.flip()
-
-        wait = True;
-        while wait:
-            clock.tick(FRAME_RATE)
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                if event.type == pygame.KEYUP:
-                    wait = False
-
-    # main game loop
-    while not game.game_over:
-        for event in pygame.event.get():
-            # Check for key presses
-            if event.type == KEYDOWN:
-                # escape key?
-                if event.key == K_ESCAPE:
-                    game.game_over = True
-                if event.key == K_UP or event.key == K_DOWN or event.key == K_RIGHT:
-                    start = True
-                # check for quit event
-            elif event.type == QUIT:
-                game.game_over = True
-
-        if pygame.sprite.spritecollideany(game.player.snake_body[0], game.apples):
-            game.score += 1
-            game.apple.update()
-            if game.score % 10 == 0:
-                FRAME_RATE += 2
-
-        pressed_keys = pygame.key.get_pressed()
-        # update the snake object
-        game.player.update(pressed_keys)
-        game.move_snake()
-
-        # Check if snake intersects any of its own blocks
-        for block in range(1, len(game.player.snake_body)):
-            if game.player.snake_body[0].rect == game.player.snake_body[block].rect:
-                game.game_over = True
-
-        # Check if snake collides with walls
-        if game.player.snake_body[0].rect.x >= SCREEN_WIDTH or game.player.snake_body[0].rect.x < 0:
-            game.game_over = True
-        if game.player.snake_body[0].rect.y >= SCREEN_HEIGHT or game.player.snake_body[0].rect.y < 0:
-            game.game_over = True
-
-        # Display Score
-        font = pygame.font.Font(None, 50)
-        score_text = font.render('Score : ' + str(game.score), True, BLACK)
-        score_rect = score_text.get_rect()
-        high_score_text = font.render('High Score : ' + str(game.high_score), True, BLACK)
-        high_score_rect = high_score_text.get_rect()
-        score_rect = SCORE_POS
-        high_score_rect = HISCORE_POS
-
-        # Blit background and sprites to the screen
-        # Put the background in the window
-        window.blit(window_bg, (0, 0))
-        # Fill the game screen with black
-        game_area.fill(BLACK)
-        # Draw the sprites on the game area
-        game.all_sprites.draw(game_area)
-        # Blit the game area onto the window
-        window.blit(game_area, GAME_AREA_POS)
-
-        # Blit the score and high score to the window
-        window.blit(score_text, score_rect)
-        window.blit(high_score_text, high_score_rect)
-
-        if game.game_over:
-            game_over()
-
+        clock.tick(2)
+        window.blit(play_again_message, play_again_rect)
         pygame.display.flip()
 
+    def game_loop():
 
-        # Set frame rate
-        clock.tick(FRAME_RATE)
+        def countdown():
+            countdown_font = pygame.font.Font(None, 200)
+            for i in reversed(range(1, 4)):
+                countdown_text = countdown_font.render(str(i), True, WHITE)
+                countdown_rect = countdown_text.get_rect()
+                countdown_rect.center = (SCREEN_WIDTH / 2 , SCREEN_HEIGHT / 2)
+                game_area.fill(BLACK)
+                game_area.blit(countdown_text, countdown_rect)
+                window.blit(game_area, GAME_AREA_POS)
+                pygame.display.flip()
+                clock.tick(1)
+
+        def update_screen():
+
+            def display_score():
+                # Display Score
+                font = pygame.font.Font(None, 50)
+                score_text = font.render('Score : ' + str(game.score), True, BLACK)
+                score_rect = score_text.get_rect()
+                high_score_text = font.render('High Score : ' + str(game.high_score), True, BLACK)
+                high_score_rect = high_score_text.get_rect()
+                score_rect = SCORE_POS
+                high_score_rect = HISCORE_POS
+                # Blit the score and high score to the window
+                window.blit(score_text, score_rect)
+                window.blit(high_score_text, high_score_rect)
+
+            # Blit background and sprites to the screen
+            # Put the background in the window
+            window.blit(window_bg, (0, 0))
+            # Fill the game screen with black
+            game_area.fill(BLACK)
+
+            # Display the score
+            display_score()
+
+            # Draw the sprites on the game area
+            game.all_sprites.draw(game_area)
+            # Blit the game area onto the window
+            window.blit(game_area, GAME_AREA_POS)
+
+            pygame.display.flip()
+
+        game = Snek.game.Game()
+
+        window.blit(window_bg, (0, 0))
+        game_area.fill(BLACK)
+
+        fps = FRAME_RATE
+
+        running = True
+
+        countdown()
+        # main game loop
+        while running:
+
+            game.game_logic()
+            update_screen()
+
+            # Set frame rate
+            clock.tick(fps)
+
+            print(game.game_over)
+            if game.game_over:
+                game_over()
+                running = False
+
+    play_again = True
+
+    game_loop()
+
+    while play_again:
+        clock.tick()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                play_again = False
+            if event.type == pygame.KEYUP:
+                game_loop()
 
 
 main()
+
+
 
 
 

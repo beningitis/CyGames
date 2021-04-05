@@ -37,13 +37,14 @@ class Block(pygame.sprite.Sprite):
 class Snake(pygame.sprite.Sprite):
     # Represents the snake
 
-    snakeBodySpriteGroup = pygame.sprite.Group()
-    snake_body = []
-    x_velocity = 24
-    y_velocity = 0
-
     def __init__(self):
         super().__init__()
+
+        self.snakeBodySpriteGroup = pygame.sprite.Group()
+        self.snake_body = []
+        self.x_velocity = 24
+        self.y_velocity = 0
+
         # Snake does not move initially
         for i in range(2):
             x = SCREEN_WIDTH // 2 - BLOCK_WIDTH // 2 - BLOCK_WIDTH * i
