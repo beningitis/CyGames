@@ -1,5 +1,6 @@
 import pygame
 import math
+import side_collisions
 
 BALL_SIZE = 6
 
@@ -9,12 +10,12 @@ class Ball(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.Surface((BALL_SIZE, BALL_SIZE))
         self.image.fill('#ffffff')
-
+        self.size = BALL_SIZE
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
-        self.x_velocity = 10
-        self.y_velocity = -10
+        self.x_velocity = 4
+        self.y_velocity = -4
         self.speed = math.sqrt((self.x_velocity ** 2) + (self.y_velocity ** 2))
 
     def update(self):

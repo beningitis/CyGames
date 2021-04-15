@@ -10,7 +10,6 @@ from pygame.locals import (
     K_RIGHT,
 )
 
-
 from Snek.constants import (
     SCREEN_WIDTH,
     SCREEN_HEIGHT,
@@ -67,7 +66,7 @@ class Game(object):
                     start = True
                 # check for quit event
             elif event.type == QUIT:
-                self.game_over = True
+                pygame.quit()
 
         if pygame.sprite.spritecollideany(self.player.snake_body[0], self.apples):
             self.score += 1
