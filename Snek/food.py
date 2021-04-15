@@ -18,9 +18,9 @@ class Food(pygame.sprite.Sprite):
     def __init__(self):
         # Constructor.  Creates the food block that the snake eats
         super().__init__()
-        self.surf = pygame.Surface((BLOCK_WIDTH, BLOCK_WIDTH))
-        self.surf.fill(RED)
-        self.rect = self.surf.get_rect()
+        self.image = pygame.Surface((BLOCK_WIDTH, BLOCK_WIDTH))
+        self.image.fill(RED)
+        self.rect = self.image.get_rect()
         self.update()
 
     def update(self):

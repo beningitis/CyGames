@@ -1,5 +1,5 @@
-import main
 from os import path
+
 
 def load_data(self):
     # load high score
