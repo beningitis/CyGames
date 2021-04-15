@@ -1,7 +1,7 @@
 import pygame
 import math
 
-BALL_SIZE = 5
+BALL_SIZE = 6
 
 
 class Ball(pygame.sprite.Sprite):
