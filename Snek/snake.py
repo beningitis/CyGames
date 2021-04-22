@@ -1,4 +1,5 @@
 import pygame
+
 from pygame.locals import (
     K_UP,
     K_DOWN,
@@ -25,10 +26,17 @@ class Block(pygame.sprite.Sprite):
 
     def __init__(self, x, y):
         super().__init__()
+        #Cited from https://opengameart.org/content/snake-sprites-sound
+       # self.surf = pygame.image.load("snakeBody.png").convert()
+       # self.surf.set_colorkey((0, 0, 0))
 
         self.image = pygame.Surface([BLOCK_WIDTH, BLOCK_WIDTH])
         self.image.fill(WHITE)
 
+        #Splitting up screen and images on surface
+        #cropped = pygame.Surface((80, 80))
+        #cropped.blit()
+        
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
