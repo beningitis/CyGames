@@ -3,6 +3,7 @@ import math
 from ball import Ball
 from paddle import Paddle
 from brick import Brick
+import side_collisions
 
 SCREEN_WIDTH = 960
 SCREEN_HEIGHT = 480
@@ -27,7 +28,7 @@ window_bg.fill('#d3d3d3')
 
 clock = pygame.time.Clock()
 
-fps = 60
+fps = 25
 
 MAX_BOUNCE_ANGLE = (4 * math.pi) / 9
 
@@ -45,7 +46,8 @@ def main():
     brick_group = pygame.sprite.Group()
     paddle_group = pygame.sprite.Group()
 
-    ball = Ball((SCREEN_WIDTH - 2 * WALL_WIDTH) / 2, SCREEN_HEIGHT - WALL_WIDTH - PADDLE_HEIGHT - 50)
+    ball = Ball(200,200)
+    #ball = Ball((SCREEN_WIDTH - 2 * WALL_WIDTH) / 2, SCREEN_HEIGHT - WALL_WIDTH - PADDLE_HEIGHT - 50)
     paddle = Paddle((SCREEN_WIDTH - 2 * WALL_WIDTH) / 2, SCREEN_HEIGHT - PADDLE_HEIGHT)
 
     # Set up bricks
@@ -110,9 +112,9 @@ def main():
             game_area.fill('#000000')
             # if ball collides with walls
             if ball.rect.right >= SCREEN_WIDTH - 2 * WALL_WIDTH or ball.rect.left <= 0:
-                ball.x_velocity *= -1
+                ball.velocity.x *= -1
             if ball.rect.top <= 0:
-                ball.y_velocity *= -1
+                ball.velocity.y *= -1
             # if ball collides with paddle
             if pygame.sprite.spritecollideany(ball, paddle_group):
                 collide_location = paddle.rect.centerx - ball.rect.centerx
@@ -122,35 +124,37 @@ def main():
                 # based on where the ball collided with the paddle
                 bounce_angle = normalized_collide_location * MAX_BOUNCE_ANGLE
                 # Calculate the new velocities, using trigonometry
-                ball.x_velocity = -1 * ball.speed * math.sin(bounce_angle)
-                ball.y_velocity = -1 * ball.speed * math.cos(bounce_angle)
+                ball.velocity.x = -1 * ball.speed * math.sin(bounce_angle)
+                ball.velocity.y = -1 * ball.speed * math.cos(bounce_angle)
 
             # ball collides with brick
             hit_bricks = pygame.sprite.spritecollide(ball, brick_group, True)
             if hit_bricks:
                 for brick in hit_bricks:
-                    print("Brick: ")
-                    print(" Top: " + str(brick.rect.top))
-                    print(" Bottom: " + str(brick.rect.bottom))
-                    print(" Right: " + str(brick.rect.right))
-                    print(" Left: " + str(brick.rect.left))
-                    print("Ball: " + str(ball.rect))
-                    print(" Top: " + str(ball.rect.top))
-                    print(" Bottom: " + str(ball.rect.bottom))
-                    print(" Right: " + str(ball.rect.right))
-                    print(" Left: " + str(ball.rect.left))
-                    if is_collide_top(brick):
-                        print("Hit top side of brick")
-                        ball.y_velocity *= -1
-                    elif is_collide_bottom(brick):
-                        print("Hit bottom side of brick")
-                        ball.y_velocity *= -1
-                    elif is_collide_right(brick):
-                        print("Hit right side of brick")
-                        ball.x_velocity *= -1
-                    elif is_collide_left(brick):
-                        print("Hit left side of brick")
-                        ball.x_velocity *= -1
+                    # print("Brick: ")
+                    # print(" Top: " + str(brick.rect.top))
+                    # print(" Bottom: " + str(brick.rect.bottom))
+                    # print(" Right: " + str(brick.rect.right))
+                    # print(" Left: " + str(brick.rect.left))
+                    # print("Ball: " + str(ball.rect))
+                    # print(" Top: " + str(ball.rect.top))
+                    # print(" Bottom: " + str(ball.rect.bottom))
+                    # print(" Right: " + str(ball.rect.right))
+                    # print(" Left: " + str(ball.rect.left))
+                    # if is_collide_top(brick):
+                    #     print("Hit top side of brick")
+                    #     ball.velocity.y *= -1
+                    # elif is_collide_bottom(brick):
+                    #     print("Hit bottom side of brick")
+                    #     ball.velocity.y *= -1
+                    # elif side_collisions.right(brick, ball):
+                    #     print("Hit right side of brick")
+                    #     ball.velocity.x *= -1
+                    # elif side_collisions.left(brick, ball):
+                    #     print("Hit left side of brick")
+                    #     ball.velocity.x *= -1
+                   ball.bounce(side_collisions.top(brick, ball), side_collisions.bottom(brick, ball),
+                                side_collisions.left(brick, ball), side_collisions.right(brick, ball))
 
             if ball.rect.bottom > SCREEN_HEIGHT - WALL_WIDTH:
                 break;

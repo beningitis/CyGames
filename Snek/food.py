@@ -19,11 +19,11 @@ class Food(pygame.sprite.Sprite):
         # Constructor.  Creates the food block that the snake eats
         super().__init__()
 
-        appleImg = pygame.image.load("apple.png")
-        appleImg=pygame.transform.scale(appleImg, (24, 24))
+        appleImg = pygame.image.load("img/apple.png")
+        appleImg = pygame.transform.scale(appleImg, (24, 24))
 
         self.image = appleImg
-        self.image.set_colorkey((0, 0, 0,))
+        self.image.set_colorkey(('#f7f7f7'))
         # self.surf = pygame.Surface([BLOCK_WIDTH, BLOCK_WIDTH])
         # self.image = pygame.Surface((BLOCK_WIDTH, BLOCK_WIDTH))
         # self.image.fill(RED)

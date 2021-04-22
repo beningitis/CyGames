@@ -14,11 +14,20 @@ class Ball(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
-        self.x_velocity = 4
-        self.y_velocity = -4
-        self.speed = math.sqrt((self.x_velocity ** 2) + (self.y_velocity ** 2))
+        self.velocity = side_collisions.Velocity((4, -4))
+        self.speed = math.sqrt((self.velocity.x ** 2) + (self.velocity.y ** 2))
 
     def update(self):
-        self.rect.x += self.x_velocity
-        self.rect.y += self.y_velocity
-        self.speed = math.sqrt((self.x_velocity ** 2) + (self.y_velocity ** 2))
+        self.rect.x += self.velocity.x
+        self.rect.y += self.velocity.y
+        self.speed = math.sqrt((self.velocity.x ** 2) + (self.velocity.y ** 2))
+
+    def bounce(self, collide_top, collide_bottom, collide_left, collide_right):
+        if collide_top or collide_bottom:
+            self.velocity.y *= -1
+        if collide_left or collide_right:
+            self.velocity.x *= -1
+        if (collide_top and collide_left) or (collide_top and collide_right):
+            self.velocity.x *= -1
+        if (collide_bottom and collide_left) or (collide_bottom and collide_right):
+            self.velocity.x *= -1
