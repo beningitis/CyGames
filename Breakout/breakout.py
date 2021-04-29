@@ -141,20 +141,20 @@ def main():
                     # print(" Bottom: " + str(ball.rect.bottom))
                     # print(" Right: " + str(ball.rect.right))
                     # print(" Left: " + str(ball.rect.left))
-                    # if is_collide_top(brick):
-                    #     print("Hit top side of brick")
-                    #     ball.velocity.y *= -1
-                    # elif is_collide_bottom(brick):
-                    #     print("Hit bottom side of brick")
-                    #     ball.velocity.y *= -1
-                    # elif side_collisions.right(brick, ball):
-                    #     print("Hit right side of brick")
-                    #     ball.velocity.x *= -1
-                    # elif side_collisions.left(brick, ball):
-                    #     print("Hit left side of brick")
-                    #     ball.velocity.x *= -1
-                   ball.bounce(side_collisions.top(brick, ball), side_collisions.bottom(brick, ball),
-                                side_collisions.left(brick, ball), side_collisions.right(brick, ball))
+                    if side_collisions.top(brick, ball):
+                        print("Hit top side of brick")
+                        ball.velocity.y *= -1
+                    elif side_collisions.bottom(brick, ball):
+                        print("Hit bottom side of brick")
+                        ball.velocity.y *= -1
+                    elif side_collisions.right(brick, ball):
+                        print("Hit right side of brick")
+                        ball.velocity.x *= -1
+                    elif side_collisions.left(brick, ball):
+                        print("Hit left side of brick")
+                        ball.velocity.x *= -1
+                    # ball.bounce(side_collisions.top(brick, ball), side_collisions.bottom(brick, ball),
+                    #            side_collisions.left(brick, ball), side_collisions.right(brick, ball))
 
             if ball.rect.bottom > SCREEN_HEIGHT - WALL_WIDTH:
                 break;
@@ -162,7 +162,7 @@ def main():
             ball.update()
 
             for events in pygame.event.get():
-                if events.type == pygame.MOUSEMOTION:
+                if events.type == pygame.MOUSEMOTION:is_collide_top(brick)
                     mouse_position = pygame.mouse.get_pos()
                     paddle.rect.x = min(mouse_position[0], (SCREEN_WIDTH - 2 * WALL_WIDTH - 50))
 
