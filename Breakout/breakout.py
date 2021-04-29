@@ -28,7 +28,7 @@ window_bg.fill('#d3d3d3')
 
 clock = pygame.time.Clock()
 
-fps = 25
+fps = 60
 
 MAX_BOUNCE_ANGLE = (4 * math.pi) / 9
 
@@ -141,20 +141,42 @@ def main():
                     # print(" Bottom: " + str(ball.rect.bottom))
                     # print(" Right: " + str(ball.rect.right))
                     # print(" Left: " + str(ball.rect.left))
-                    if side_collisions.top(brick, ball):
+                    if is_collide_top(brick):
                         print("Hit top side of brick")
                         ball.velocity.y *= -1
-                    elif side_collisions.bottom(brick, ball):
+                    elif is_collide_bottom(brick):
                         print("Hit bottom side of brick")
                         ball.velocity.y *= -1
                     elif side_collisions.right(brick, ball):
                         print("Hit right side of brick")
                         ball.velocity.x *= -1
                     elif side_collisions.left(brick, ball):
-                        print("Hit left side of brick")
+                         print("Hit left side of brick")
+                         ball.velocity.x *= -1
+                    elif side_collisions.multiple(("left", "bottom")):
+                        print("Hit left and bottom side of brick")
                         ball.velocity.x *= -1
+                        ball.velocity.y *= -1
+                    elif side_collisions.multiple(("left", "top")):
+                        print("Hit left and bottom side of brick")
+                        ball.velocity.x *= -1
+                        ball.velocity.y *= -1
+                    elif side_collisions.multiple(("right", "bottom")):
+                        print("Hit right and bottom side of brick")
+                        ball.velocity.x *= -1
+                        ball.velocity.y *= -1
+                    elif side_collisions.multiple(("right", "top")):
+                        print("Hit right and top side of brick")
+                        ball.velocity.x *= -1
+                        ball.velocity.y *= -1
+
                     # ball.bounce(side_collisions.top(brick, ball), side_collisions.bottom(brick, ball),
                     #            side_collisions.left(brick, ball), side_collisions.right(brick, ball))
+
+                    # if ball.rect.centerx > brick.rect.right or ball.rect.centerx < brick.rect.left and not (is_collide_top(brick) or is_collide_bottom(brick)):
+                    #     ball.velocity.x *= -1
+                    # else:
+                    #     ball.velocity.y *= -1
 
             if ball.rect.bottom > SCREEN_HEIGHT - WALL_WIDTH:
                 break;
@@ -162,7 +184,7 @@ def main():
             ball.update()
 
             for events in pygame.event.get():
-                if events.type == pygame.MOUSEMOTION:is_collide_top(brick)
+                if events.type == pygame.MOUSEMOTION:
                     mouse_position = pygame.mouse.get_pos()
                     paddle.rect.x = min(mouse_position[0], (SCREEN_WIDTH - 2 * WALL_WIDTH - 50))
 
