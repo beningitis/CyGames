@@ -10,7 +10,7 @@ class Ball(pygame.sprite.Sprite):
         self.moving = False
         super().__init__()
         self.image = pygame.Surface((BALL_SIZE, BALL_SIZE))
-        self.image.fill('#ffffff')
+        self.image.fill((255,255,255))
         self.size = BALL_SIZE
         self.rect = self.image.get_rect()
         self.rect.x = x

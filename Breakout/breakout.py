@@ -24,7 +24,7 @@ pygame.init()
 window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 window_bg = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
 window_bg = window_bg.convert()
-window_bg.fill('#d3d3d3')
+window_bg.fill((211,211,211))
 
 clock = pygame.time.Clock()
 
@@ -37,7 +37,7 @@ def main():
     frame_size = (SCREEN_WIDTH - 2 * WALL_WIDTH, SCREEN_HEIGHT - WALL_WIDTH)
     game_area = pygame.Surface(frame_size)
     game_area = game_area.convert()
-    game_area.fill('#000000')
+    game_area.fill((0,0,0))
     window.blit(window_bg, (0, 0))
     window.blit(game_area, (WALL_WIDTH, WALL_WIDTH))
 
@@ -110,7 +110,7 @@ def main():
         running = True
         waiting_for_mouse_click = True
         while running:
-            game_area.fill('#000000')
+            game_area.fill((0,0,0))
             # if ball collides with walls
             if ball.rect.right >= SCREEN_WIDTH - 2 * WALL_WIDTH or ball.rect.left <= 0:
                 ball.velocity.x *= -1

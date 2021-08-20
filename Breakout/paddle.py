@@ -8,7 +8,7 @@ class Paddle(pygame.sprite.Sprite):
         super().__init__()
         self.paddle_width = PADDLE_SIZE[0]
         self.image = pygame.Surface(PADDLE_SIZE)
-        self.image.fill('#00f00f')
+        self.image.fill((0,240,15))
 
         self.rect = self.image.get_rect()
         self.rect.x = x
